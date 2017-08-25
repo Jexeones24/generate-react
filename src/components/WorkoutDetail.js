@@ -5,7 +5,6 @@ export default class WorkoutDetail extends Component {
   // need to be fed single
   render(){
     console.log("in workout detail", this.props)
-    debugger
 
 
     return(

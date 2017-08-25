@@ -1,7 +1,7 @@
 import React from 'react'
 
-const NewWorkout = ({names, movements}) => {
-  console.log("in new workout", names, movements)
+const NewWorkoutDisplay = ({names, movements}) => {
+  // console.log("in new workout", names, movements)
   return(
     <div>
       <h2>WORKOUT NAME:</h2>
@@ -12,4 +12,4 @@ const NewWorkout = ({names, movements}) => {
   )
 }
 
-export default NewWorkout
+export default NewWorkoutDisplay

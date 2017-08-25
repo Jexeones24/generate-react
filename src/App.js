@@ -4,6 +4,7 @@ import { movements, workoutNames } from './movementData'
 import NavBar from './components/NavBar'
 import StopwatchContainer from './components/StopwatchContainer'
 import WorkoutContainer from './components/WorkoutContainer'
+// import { Grid, Image } from 'semantic-ui-react'
 
 class App extends Component {
   constructor(){
@@ -23,7 +24,7 @@ class App extends Component {
           <StopwatchContainer />
         </div>
         <div>
-          <WorkoutContainer movements={this.state.movements} names={this.state.names}/>
+          <WorkoutContainer movements={this.state.movements} names={this.state.names} timeDomain={this.timeDomain}/>
         </div>
       </div>
     );
