@@ -1,0 +1,28 @@
+ * {
+  background-color: black;
+  color: #bbb;
+  font-family: Menlo;
+}
+
+.stopwatch-container {
+    width: 100%;
+    border: 10px solid black;
+    padding: 100px;
+    margin: 25px;
+}
+
+.workout-detail {
+  padding: 60px;
+  margin: 25px;
+}
+
+.workout-container {
+  width: 90%;
+  border: 10px solid black;
+  padding: 100px;
+  margin: 25px;
+}
+
+.workout-display {
+  /*background-color: grey;*/
+}

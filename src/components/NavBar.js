@@ -7,10 +7,8 @@ export default class NavBar extends Component {
     return(
       <div>
         <Menu pointing secondary>
-          <Menu.Item name='home'/>
-          <Menu.Item name='messages'/>
-          <Menu.Item name='friends' />
           <Menu.Menu position='right'>
+            <Menu.Item name='home'/>
             <Menu.Item name='logout' />
           </Menu.Menu>
         </Menu>

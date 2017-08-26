@@ -7,33 +7,42 @@ export default class WorkoutContainer extends Component {
     super();
 
     this.state = {
-      timeDomain: 5
+      timeDomain: 5,
+      workoutName: "",
+      workoutStyle: "",
+      chosenMovements: [],
+      repsPer: []
     }
   }
 
   handleChange = (e) => {
-    let timeDomain = e.target.value
-    this.setState({ timeDomain })
+    this.setState({ timeDomain: e.target.value })
+    let workoutName = this.props.names[Math.floor(Math.random() * this.props.names.length)]
     let workoutStyle = this.chooseStyle()
-    console.log("workout style", workoutStyle)
     let numberOfMovements = this.numberOfMovements(workoutStyle)
-    console.log("number of movements", numberOfMovements)
     let chosenMovements = this.chooseMovements(numberOfMovements)
-    console.log("chosen movements", chosenMovements)
-    this.assignReps()
+    let repsPer = chosenMovements.map((m) => this.assignReps(m))
+    this.makeWorkout(workoutName, workoutStyle, chosenMovements, repsPer)
   }
 
-  // chooses randomly from array
+  makeWorkout = (workoutName, workoutStyle, chosenMovements, repsPer) => {
+    this.setState({
+      workoutName,
+      workoutStyle,
+      chosenMovements,
+      repsPer
+    })
+  }
+
   getOption = (optionsArr) => {
      return optionsArr[Math.floor(Math.random() * optionsArr.length)]
   }
 
-  // chooses workout style ("AMRAP")
   chooseStyle = () => {
     let style = null;
-    const lowVol = ["As Many Rounds As Possible In", "Every Minute On The Minute","3 Rounds For Time"]
-    const medVol = ["As Many Rounds As Possible In", "Every 2 Minutes On The Minute", "4 Rounds For Time"]
-    const hiVol = ["Every 3 Minutes On The Minute", "5 Rounds For time"]
+    const lowVol = ["As Many Rounds As Possible In", "Every Minute On The Minute For","3 Rounds For Time"]
+    const medVol = ["As Many Rounds As Possible In", "Every 2 Minutes On The Minute For", "4 Rounds For Time"]
+    const hiVol = ["Every 3 Minutes On The Minute For", "5 Rounds For time"]
     if(this.state.timeDomain >= 5 || this.state.timeDomain <= 10){
       return style = this.getOption(lowVol)
     } else if (this.state.timeDomain >= 11 || this.state.timeDomain <= 20){
@@ -45,7 +54,6 @@ export default class WorkoutContainer extends Component {
 
 
   numberOfMovements = (style) => {
-    // debugger
     let numberOfMovements = null;
     if(style === "As Many Rounds As Possible In" || style === "Every Minute On The Minute" || style === "3 Rounds For Time" || style === "Every 2 Minutes On The Minute"){
       return numberOfMovements = Math.floor(Math.random() * (3 - 2) + 2)
@@ -55,18 +63,29 @@ export default class WorkoutContainer extends Component {
   }
 
   chooseMovements = (numberOfMovements) => {
-    // debugger
     let number = this.props.movements.length - numberOfMovements
     let chosenMovements = this.props.movements.sort( function() { return 0.5 - Math.random()}).slice(number)
     return chosenMovements
   }
 
-  assignReps = () => {
-    console.log("in assign reps")
-    // seconds per movement
-    // only if EMOM 
+  assignReps = (m) => {
+    let reps = null;
+    if (m.description === "Cardio"){
+      return reps = m.seconds_per
+    } else if(m.skill === "High"){
+      return reps = Math.floor(Math.random() * (8 - 3) + 3)
+    } else if (m.skill === "Moderate"){
+      return reps = Math.floor(Math.random() * (15 - 9) + 9)
+    } else {
+      return reps = Math.floor(Math.random() * (40 - 16) + 16)
+    }
   }
 
+  displayVideo = (e) => {
+    console.log("in display video", e)
+    // filter movements where movement.video === e
+    // display in workout detail
+  }
 
   render(){
     let numbers = []
@@ -74,22 +93,16 @@ export default class WorkoutContainer extends Component {
 
     return(
       <div>
-        <h1>Workout Container</h1>
         <form className="time-domain-form" onChange={this.handleChange}>
           Enter Time Domain:
           <select>
             {numbers.map((n, i) => <option value={n} key={i}>{n}</option>)}
           </select>
         </form>
-        <div className="ui grid">
-          <div className="eight wide column">
-            <NewWorkoutDisplay names={this.props.names} movements={this.props.movements}/>
-          </div>
-        </div>
-        <div className="ui grid">
-          <div className="eight wide column">
-            <WorkoutDetail movements={this.props.movements}/>
-          </div>
+          <div className="workout-display">
+            <NewWorkoutDisplay
+            workoutName={this.state.workoutName}
+            timeDomain={this.state.timeDomain} workoutStyle={this.state.workoutStyle} chosenMovements={this.state.chosenMovements} repsPer={this.state.repsPer} video={this.displayVideo}/>
         </div>
       </div>
     )

@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "Faker": "^0.7.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-player": "^0.20.0",
     "react-scripts": "1.0.11",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.71.5"

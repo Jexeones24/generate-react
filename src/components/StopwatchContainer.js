@@ -6,7 +6,7 @@ export default class StopwatchContainer extends Component {
   render(){
     return(
       <div>
-        <h2>Stopwatch Container</h2>
+        <h1>STOPWATCH CONTAINER</h1>
         <Stopwatch />
       </div>
     )
