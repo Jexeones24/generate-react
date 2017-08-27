@@ -4,6 +4,7 @@ import NavBar from './components/NavBar'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
+import UserShowPage from './components/UserShowPage'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import UserAdapter from './adapters/UserAdapter'
 import SessionAdapter from './adapters/SessionAdapter'
@@ -30,6 +31,7 @@ class App extends Component {
     )
   }
 
+  // this gives an undefined token
   getUser = (username, password) => {
     console.log("in get user")
     SessionAdapter.getUser(username, password)
@@ -39,6 +41,12 @@ class App extends Component {
       })
     }
 
+  logout = () => {
+    this.setState({loggedIn: false, currentUser: {}})
+    localStorage.token = ""
+    this.props.history.push("login")
+  }
+
   // where did params come from?
   renderLogin = (params) => {
     return(
@@ -46,15 +54,26 @@ class App extends Component {
     )
   }
 
-  renderSignUp = () => {
+  renderSignUp = (params) => {
     return(
-      <Signup createUser={this.createUser}/>
+      <Signup createUser={this.createUser} history={params.history} loggedIn={this.state.loggedIn}/>
     )
   }
 
-  renderHome = () => {
+
+  renderHome = (params) => {
     return(
-      <Home />
+      <Home
+        history={params.history}
+        loggedIn={this.state.loggedIn}
+        logout={this.logout}/>
+    )
+  }
+
+
+  renderUser = () => {
+    return(
+      <UserShowPage logout={this.logout} currentUser={this.state.currentUser} getUser={this.getUser}/>
     )
   }
 
@@ -63,10 +82,11 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            <NavBar />
+            <NavBar loggedIn={this.props.loggedIn} logout={this.logout} />
             <Route exact path="/" render={this.renderHome} />
             <Route exact path="/login" render={this.renderLogin} />
             <Route exact path="/signup" render={this.renderSignUp} />
+            <Route exact path="/user" render={this.renderUser} />
           </div>
         </Router>
       </div>

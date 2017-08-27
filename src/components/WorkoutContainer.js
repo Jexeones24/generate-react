@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { Dropdown } from 'semantic-ui-react'
 import NewWorkoutDisplay from './NewWorkoutDisplay'
-import WorkoutDetail from './WorkoutDetail'
+import DemoVideo from './DemoVideo'
+import WorkoutAdapter from '../adapters/WorkoutAdapter'
 
 export default class WorkoutContainer extends Component {
   constructor(){
@@ -15,7 +17,8 @@ export default class WorkoutContainer extends Component {
     }
   }
 
-  handleChange = (e) => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     this.setState({ timeDomain: e.target.value })
     let workoutName = this.props.names[Math.floor(Math.random() * this.props.names.length)]
     let workoutStyle = this.chooseStyle()
@@ -25,6 +28,7 @@ export default class WorkoutContainer extends Component {
     this.makeWorkout(workoutName, workoutStyle, chosenMovements, repsPer)
   }
 
+  // save entire workout here
   makeWorkout = (workoutName, workoutStyle, chosenMovements, repsPer) => {
     this.setState({
       workoutName,
@@ -32,6 +36,7 @@ export default class WorkoutContainer extends Component {
       chosenMovements,
       repsPer
     })
+    WorkoutAdapter.createWorkout(workoutName)
   }
 
   getOption = (optionsArr) => {
@@ -82,22 +87,21 @@ export default class WorkoutContainer extends Component {
   }
 
   displayVideo = (e) => {
-    console.log("in display video", e)
-    // filter movements where movement.video === e
-    // display in workout detail
+    let video = this.props.movements.filter((m) => m.name === e[1])
+    this.props.renderVideo(video)
   }
 
   render(){
     let numbers = []
     for (var i = 5; i <= 60; i++) { numbers.push(i) }
-
     return(
       <div>
-        <form className="time-domain-form" onChange={this.handleChange}>
+        <form className="time-domain-form" onSubmit={this.handleSubmit}>
           Enter Time Domain:
           <select>
             {numbers.map((n, i) => <option value={n} key={i}>{n}</option>)}
           </select>
+          <button name="submit">Gener8</button>
         </form>
           <div className="workout-display">
             <NewWorkoutDisplay

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Form, Segment } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 
 class SignUp extends React.Component{
   constructor(props){
@@ -12,11 +12,11 @@ class SignUp extends React.Component{
     }
   }
 
-  // componentWillReceiveProps(props) {
-  //    if (props.loggedIn) {
-  //      props.history.push('main')
-  //    }
-  // }
+  componentWillReceiveProps(props) {
+     if (props.loggedIn) {
+       props.history.push('/')
+     }
+  }
 
     handleChange = (e) => {
     const property = e.target.name
@@ -53,7 +53,6 @@ class SignUp extends React.Component{
       </div>
     )
   }
-
 }
 
 export default SignUp

@@ -13,6 +13,7 @@ export default class NewWorkoutDisplay extends Component {
     this.props.video(e)
   }
 
+  //time domain is undefined
   render(){
     let movements = this.props.chosenMovements.map((m) => m.name)
     let newArr = this.props.repsPer.map((rep, i) => [rep, movements[i]])

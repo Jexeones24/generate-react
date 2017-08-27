@@ -4,13 +4,18 @@ import { NavLink } from 'react-router-dom';
 
 export default class NavBar extends Component {
 
+  logout = () => {
+    console.log("in logout")
+    localStorage.clear()
+  }
+  
   render(){
     return(
       <div>
         <Menu pointing secondary>
           <Menu.Menu position='right'>
             <NavLink to="/"><Menu.Item name='home'/></NavLink>
-            <NavLink to="/login"><Menu.Item name='login'/></NavLink>
+            {(this.props.loggedIn === false) ? <NavLink to="/login"><Menu.Item name='login'/></NavLink> : <NavLink to="/login"><Menu.Item name='logout' onClick={this.logout}/></NavLink>}
             <NavLink to="/signup"><Menu.Item name='signup'/></NavLink>
           </Menu.Menu>
         </Menu>

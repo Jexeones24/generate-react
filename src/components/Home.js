@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import {Redirect} from 'react-router'
-import { Grid, Image } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import StopwatchContainer from './StopwatchContainer'
 import WorkoutContainer from './WorkoutContainer'
-import WorkoutDetail from './WorkoutDetail'
+import DemoVideo from './DemoVideo'
 import { workoutNames } from '../movementData'
 
 
@@ -14,6 +13,7 @@ export default class Home extends Component {
     this.state = {
       movements: [],
       names: workoutNames,
+      demoVideo: []
     }
   }
 
@@ -21,6 +21,11 @@ export default class Home extends Component {
     fetch("http://localhost:3000/api/v1/movements")
     .then( resp => resp.json())
       .then( movements => this.setState({ movements }))
+  }
+
+  renderVideo = (video) => {
+    let demoVideo = video[0].url
+    this.setState({ demoVideo })
   }
 
   render(){
@@ -39,12 +44,12 @@ export default class Home extends Component {
         <Grid.Row>
           <Grid.Column width={8}>
             <div className="workout-container">
-            <WorkoutContainer movements={this.state.movements} names={this.state.names} timeDomain={this.timeDomain}/>
+            <WorkoutContainer movements={this.state.movements} names={this.state.names} timeDomain={this.timeDomain} renderVideo={this.renderVideo}/>
             </div>
           </Grid.Column>
           <Grid.Column width={8}>
             <div className="workout-detail">
-            <WorkoutDetail />
+              <DemoVideo url={this.state.demoVideo}/>
             </div>
           </Grid.Column>
           </Grid.Row>
