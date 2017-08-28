@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown, Button } from 'semantic-ui-react'
 import NewWorkoutDisplay from './NewWorkoutDisplay'
 import DemoVideo from './DemoVideo'
 import WorkoutAdapter from '../adapters/WorkoutAdapter'
@@ -99,17 +99,16 @@ export default class WorkoutContainer extends Component {
   }
 
   render(){
-    debugger
     let numbers = []
     for (var i = 5; i <= 60; i++) { numbers.push(i) }
     return(
       <div>
         <form className="time-domain-form" onSubmit={this.handleSubmit}>
-          Enter Time Domain:
+          <h1>Enter Time Domain: </h1>
           <select onChange={this.handleChange}>
             {numbers.map((n, i) => <option value={n} key={i}>{n}</option>)}
           </select>
-          <button name="submit">Gener8</button>
+          <Button color='green'>Gener8</Button>
         </form>
           <div className="workout-display">
             <NewWorkoutDisplay

@@ -1,9 +1,8 @@
 
 .stopwatch-container {
-    width: 100%;
-    border: 10px solid black;
-    padding: 100px;
-    margin: 25px;
+    padding-top: 100px;
+    padding: 0;
+    margin: 0;
 }
 
 .workout-detail {
@@ -13,7 +12,28 @@
 
 .workout-container {
   width: 90%;
-  border: 10px solid black;
+  border: 5px solid black;
   padding: 100px;
   margin: 25px;
+}
+
+.controls {
+  padding-bottom: 50px;
+  text-align: center;
+  hover: white;
+}
+
+.timer-display {
+  font-size: 5vw;
+  font-family: Menlo;
+  height: 100%;
+  line-height: 15vh;
+  text-align: center;
+  width: 100%;
+}
+
+.title {
+  font-family: Menlo;
+  font-size: 5vw;
+  padding: 50px;
 }

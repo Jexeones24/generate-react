@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import TimerDisplay from './TimerDisplay'
 import { Button } from 'semantic-ui-react'
 
 let seconds = 0, minutes = 0, hours = 0;
@@ -91,8 +90,9 @@ export default class Stopwatch extends Component {
 
   render(){
     return(
-      <div className="timer">
-        <h1>{this.timeFormatter(this.state.time)}</h1>
+      <div className="controls">
+        <h1 className="title">STOPWATCH</h1>
+        <h1 className="timer-display">{this.timeFormatter(this.state.time)}</h1>
         <Button primary className="toggle" onClick={this.toggle}>{this.state.isRunning ? "Pause" : "Start"}</Button>
         <Button secondary className="reset" onClick={this.reset}>Reset</Button>
         <Button color='green'>Save</Button>
