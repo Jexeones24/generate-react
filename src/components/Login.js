@@ -13,7 +13,7 @@ export default class Login extends Component{
 
   componentWillReceiveProps(props) {
      if (props.loggedIn) {
-       props.history.push('/user')
+       props.history.push('/profile')
      }
   }
 
@@ -35,13 +35,17 @@ export default class Login extends Component{
         <Segment inverted>
           <Form inverted onSubmit={this.handleSubmit}>
             <Form.Group widths='equal'>
-              <Form.Input type="text" name="username" label='Username' value={this.state.username} onChange={this.handleChange}/>
-              <Form.Input type="password" name="password" label='Password' value={this.state.password} onChange={this.handleChange}/>
-            </Form.Group>
-            <Button type='submit'>Submit</Button>
-          </Form>
-        </Segment>
-      </div>
+              <Form.Input type="text" name="username"
+              label="Username" value={this.state.username}
+              onChange={this.handleChange} />
+              <Form.Input type="password" name="password"
+              label="Password" value={this.state.password}
+              onChange={this.handleChange}/>
+            </Form.Group >
+          <Button type='submit'>Submit</Button>
+        </Form>
+      </Segment>
+    </div>
     )
   }
 }

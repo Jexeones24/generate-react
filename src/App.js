@@ -4,7 +4,7 @@ import NavBar from './components/NavBar'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
-import UserShowPage from './components/UserShowPage'
+import Profile from './components/Profile'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import UserAdapter from './adapters/UserAdapter'
 import SessionAdapter from './adapters/SessionAdapter'
@@ -60,20 +60,21 @@ class App extends Component {
     )
   }
 
-
+  // workout page - need to be logged in to see it
   renderHome = (params) => {
     return(
       <Home
         history={params.history}
         loggedIn={this.state.loggedIn}
-        logout={this.logout}/>
+        logout={this.logout}
+        currentUser={this.state.currentUser}/>
     )
   }
 
-
-  renderUser = () => {
+  // user show - need to be logged in to see it
+  renderProfile = () => {
     return(
-      <UserShowPage logout={this.logout} currentUser={this.state.currentUser} getUser={this.getUser}/>
+      <Profile logout={this.logout} currentUser={this.state.currentUser} getUser={this.getUser}/>
     )
   }
 
@@ -84,9 +85,9 @@ class App extends Component {
           <div>
             <NavBar loggedIn={this.props.loggedIn} logout={this.logout} />
             <Route exact path="/" render={this.renderHome} />
+            <Route exact path="/profile" render={this.renderProfile} />
             <Route exact path="/login" render={this.renderLogin} />
             <Route exact path="/signup" render={this.renderSignUp} />
-            <Route exact path="/user" render={this.renderUser} />
           </div>
         </Router>
       </div>

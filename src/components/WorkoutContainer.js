@@ -9,34 +9,46 @@ export default class WorkoutContainer extends Component {
     super();
 
     this.state = {
-      timeDomain: 5,
+      timeDomain: null,
       workoutName: "",
       workoutStyle: "",
       chosenMovements: [],
-      repsPer: []
+      repsPer: [],
+      currentUser: {}
     }
   }
 
+  handleChange = (e) => {
+    debugger
+    let timeDomain = e.target.value
+    this.setState({ timeDomain })
+  }
+
+
   handleSubmit = (e) => {
+    debugger
     e.preventDefault()
-    this.setState({ timeDomain: e.target.value })
+    let currentUser = this.props.currentUser
+    this.setState({ currentUser })
     let workoutName = this.props.names[Math.floor(Math.random() * this.props.names.length)]
     let workoutStyle = this.chooseStyle()
     let numberOfMovements = this.numberOfMovements(workoutStyle)
     let chosenMovements = this.chooseMovements(numberOfMovements)
     let repsPer = chosenMovements.map((m) => this.assignReps(m))
-    this.makeWorkout(workoutName, workoutStyle, chosenMovements, repsPer)
+    this.makeWorkout(workoutName, workoutStyle, chosenMovements, repsPer, currentUser)
   }
 
-  // save entire workout here
-  makeWorkout = (workoutName, workoutStyle, chosenMovements, repsPer) => {
+  // save entire workout here - assoc with user
+  makeWorkout = (workoutName, workoutStyle, chosenMovements, repsPer, currentUser) => {
+    debugger
     this.setState({
       workoutName,
       workoutStyle,
       chosenMovements,
       repsPer
     })
-    WorkoutAdapter.createWorkout(workoutName)
+    console.log(currentUser)
+    WorkoutAdapter.createWorkout(workoutName, currentUser)
   }
 
   getOption = (optionsArr) => {
@@ -48,9 +60,9 @@ export default class WorkoutContainer extends Component {
     const lowVol = ["As Many Rounds As Possible In", "Every Minute On The Minute For","3 Rounds For Time"]
     const medVol = ["As Many Rounds As Possible In", "Every 2 Minutes On The Minute For", "4 Rounds For Time"]
     const hiVol = ["Every 3 Minutes On The Minute For", "5 Rounds For time"]
-    if(this.state.timeDomain >= 5 || this.state.timeDomain <= 10){
+    if(this.state.timeDomain >= 5 && this.state.timeDomain <= 10){
       return style = this.getOption(lowVol)
-    } else if (this.state.timeDomain >= 11 || this.state.timeDomain <= 20){
+    } else if (this.state.timeDomain >= 11 && this.state.timeDomain <= 20){
       return style = this.getOption(medVol)
     } else {
       return style = this.getOption(hiVol)
@@ -98,7 +110,7 @@ export default class WorkoutContainer extends Component {
       <div>
         <form className="time-domain-form" onSubmit={this.handleSubmit}>
           Enter Time Domain:
-          <select>
+          <select onChange={this.handleChange}>
             {numbers.map((n, i) => <option value={n} key={i}>{n}</option>)}
           </select>
           <button name="submit">Gener8</button>

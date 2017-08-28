@@ -14,7 +14,7 @@ class SignUp extends React.Component{
 
   componentWillReceiveProps(props) {
      if (props.loggedIn) {
-       props.history.push('/')
+       props.history.push('/profile')
      }
   }
 
@@ -46,7 +46,7 @@ class SignUp extends React.Component{
            </Form.Field>
            <Form.Field onChange={this.handleChange} value={this.state.password}>
              <label>Password</label>
-             <input placeholder='Password' name="password"/>
+             <input placeholder='Password' type="password" name="password"/>
            </Form.Field>
            <Button type='submit'>Submit</Button>
          </Form>

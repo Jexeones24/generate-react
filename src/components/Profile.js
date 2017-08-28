@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Grid, Image, Card, Icon, } from 'semantic-ui-react'
+import { Grid, Image, Card, Icon, Button } from 'semantic-ui-react'
 import SessionAdapter from '../adapters/SessionAdapter'
 import WorkoutAdapter from '../adapters/WorkoutAdapter'
+import { Link } from 'react-router-dom';
 
-export default class UserShowPage extends Component {
+export default class Profile extends Component {
   constructor(){
     super();
 
@@ -33,8 +34,7 @@ export default class UserShowPage extends Component {
             this.setState({ workouts })
           })
       })
-
-}
+    }
 
   render(){
     // debugger
@@ -56,7 +56,7 @@ export default class UserShowPage extends Component {
                       </span>
                     </Card.Meta>
                     <Card.Description>
-                      Jessica is a human being living on Planet Earth.
+                      {this.props.currentUser.username} is a human being living on Planet Earth.
                     </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
@@ -75,18 +75,23 @@ export default class UserShowPage extends Component {
           <Grid.Row>
             <Grid.Column width={8}>
               <div className="stats">
-                STATS
-                <li>workouts completed today</li>
-                <li>workouts completed this week</li>
-                <li>workouts completed this month</li>
-                <li>total workouts</li>
+                <h1>STATS</h1>
+                <div className="stats">
+                  <li>workouts completed today</li>
+                  <li>workouts completed this week</li>
+                  <li>workouts completed this month</li>
+                  <li>total workouts</li>
+                </div>
               </div>
             </Grid.Column>
             <Grid.Column width={8}>
               <div className="last-workout">
-                LAST WORKOUT
+                <h1>LAST WORKOUT</h1>
+                <div>
                 {this.state.workouts.map((w) => <li>{w}</li>)}
+                </div>
               </div>
+              <Link to={"/"}><Button id="gener8">Gener8</Button></Link>
             </Grid.Column>
             </Grid.Row>
           </Grid>

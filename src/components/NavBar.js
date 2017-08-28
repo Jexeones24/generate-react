@@ -5,11 +5,13 @@ import { NavLink } from 'react-router-dom';
 export default class NavBar extends Component {
 
   logout = () => {
-    console.log("in logout")
     localStorage.clear()
   }
-  
+
+  // want to say logged in if logged out, vice versa
+  // say profile if on home, vice versa
   render(){
+    // debugger
     return(
       <div>
         <Menu pointing secondary>

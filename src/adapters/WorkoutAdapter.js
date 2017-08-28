@@ -13,12 +13,15 @@ export default class WorkoutAdapter {
       })
     }
 
-  static createWorkout(workoutName) {
+  static createWorkout(workoutName, currentUser) {
     debugger
     return fetch(path, {
       method: 'post',
       headers: headers(),
-      body: JSON.stringify({ name: workoutName })
+      body: JSON.stringify({
+        name: workoutName,
+        user_id: currentUser.id
+      })
     })
     .then( resp => resp.json())
   }

@@ -44,7 +44,7 @@ export default class Home extends Component {
         <Grid.Row>
           <Grid.Column width={8}>
             <div className="workout-container">
-            <WorkoutContainer movements={this.state.movements} names={this.state.names} timeDomain={this.timeDomain} renderVideo={this.renderVideo}/>
+            <WorkoutContainer movements={this.state.movements} names={this.state.names} timeDomain={this.timeDomain} renderVideo={this.renderVideo} currentUser={this.props.currentUser}/>
             </div>
           </Grid.Column>
           <Grid.Column width={8}>
