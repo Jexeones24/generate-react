@@ -9,7 +9,7 @@ export default class Profile extends Component {
     super();
 
     this.state = {
-      workouts: [], //user's workouts
+      workouts: [],
       currentUser: {},
       loggedIn: false
     }
@@ -20,14 +20,11 @@ export default class Profile extends Component {
    }
 
   componentDidMount(){
-    console.log("Mounting Main")
     SessionAdapter.currentUser()
       .then(currentUser => {
-        console.log("Current User",currentUser)
         this.setState({currentUser, loggedIn: true})
       })
       .then( () => {
-        console.log("Getting Workouts", this.state.currentUser)
         WorkoutAdapter.getWorkouts(this.state.currentUser)
           .then( workouts => {
             console.log(workouts)
@@ -38,9 +35,14 @@ export default class Profile extends Component {
 
   render(){
     // debugger
+    let now = new Date();
+    let day = ("0" + now.getDate()).slice(-2);
+    let month = ("0" + (now.getMonth() + 1)).slice(-2);
+    let today = now.getFullYear() + "-" + (month) + "-" + (day);
+    let wodsToday = this.state.workouts.filter((w) => { return w.created_at.substring(0, w.created_at.indexOf("T")) === today })
+
     return(
       <div>
-        USERSHOWPAGE
           <Grid centered columns={4}>
             <Grid.Column>
               <div className="">
@@ -77,10 +79,12 @@ export default class Profile extends Component {
               <div className="stats">
                 <h1>STATS</h1>
                 <div className="stats">
-                  <li>workouts completed today</li>
-                  <li>workouts completed this week</li>
-                  <li>workouts completed this month</li>
-                  <li>total workouts</li>
+                  <h3>Workouts Completed Today:</h3>
+                  {wodsToday.map((w, i) => <li key={i}>{w.name}</li>)}
+                  <h3>Workouts This Week:</h3>
+                  <h3>Workouts This Month:</h3>
+                  <h3>Total Workouts:</h3>
+                  <p>{this.state.workouts.length}</p>
                 </div>
               </div>
             </Grid.Column>
@@ -88,7 +92,7 @@ export default class Profile extends Component {
               <div className="last-workout">
                 <h1>LAST WORKOUT</h1>
                 <div>
-                {this.state.workouts.map((w) => <li>{w}</li>)}
+                  {/* {this.state.workouts.slice(-1)[0].name} */}
                 </div>
               </div>
               <Link to={"/"}><Button id="gener8">Gener8</Button></Link>

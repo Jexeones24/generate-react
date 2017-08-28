@@ -19,14 +19,12 @@ export default class WorkoutContainer extends Component {
   }
 
   handleChange = (e) => {
-    debugger
     let timeDomain = e.target.value
     this.setState({ timeDomain })
   }
 
 
   handleSubmit = (e) => {
-    debugger
     e.preventDefault()
     let currentUser = this.props.currentUser
     this.setState({ currentUser })
@@ -38,17 +36,14 @@ export default class WorkoutContainer extends Component {
     this.makeWorkout(workoutName, workoutStyle, chosenMovements, repsPer, currentUser)
   }
 
-  // save entire workout here - assoc with user
   makeWorkout = (workoutName, workoutStyle, chosenMovements, repsPer, currentUser) => {
-    debugger
     this.setState({
       workoutName,
       workoutStyle,
       chosenMovements,
       repsPer
     })
-    console.log(currentUser)
-    WorkoutAdapter.createWorkout(workoutName, currentUser)
+    WorkoutAdapter.createWorkout(workoutName, workoutStyle, chosenMovements, repsPer, currentUser)
   }
 
   getOption = (optionsArr) => {
@@ -104,6 +99,7 @@ export default class WorkoutContainer extends Component {
   }
 
   render(){
+    debugger
     let numbers = []
     for (var i = 5; i <= 60; i++) { numbers.push(i) }
     return(
