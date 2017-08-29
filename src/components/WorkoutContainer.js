@@ -25,6 +25,7 @@ export default class WorkoutContainer extends Component {
 
 
   handleSubmit = (e) => {
+    debugger
     e.preventDefault()
     let currentUser = this.props.currentUser
     this.setState({ currentUser })
@@ -52,9 +53,9 @@ export default class WorkoutContainer extends Component {
 
   chooseStyle = () => {
     let style = null;
-    const lowVol = ["As Many Rounds As Possible In", "Every Minute On The Minute For","3 Rounds For Time"]
+    const lowVol = ["As Many Rounds As Possible In", "Every Minute On The Minute For", "3 Rounds For Time"]
     const medVol = ["As Many Rounds As Possible In", "Every 2 Minutes On The Minute For", "4 Rounds For Time"]
-    const hiVol = ["Every 3 Minutes On The Minute For", "5 Rounds For time"]
+    const hiVol = ["Every 3 Minutes On The Minute For", "5 Rounds For Time"]
     if(this.state.timeDomain >= 5 && this.state.timeDomain <= 10){
       return style = this.getOption(lowVol)
     } else if (this.state.timeDomain >= 11 && this.state.timeDomain <= 20){
@@ -105,10 +106,10 @@ export default class WorkoutContainer extends Component {
       <div>
         <form className="time-domain-form" onSubmit={this.handleSubmit}>
           <h1>Enter Time Domain: </h1>
-          <select onChange={this.handleChange}>
+          <select className="time-domain-select"    onChange={this.handleChange}>
             {numbers.map((n, i) => <option value={n} key={i}>{n}</option>)}
           </select>
-          <Button color='green'>Gener8</Button>
+          <Button color='green' className="generate-button">Gener8</Button>
         </form>
           <div className="workout-display">
             <NewWorkoutDisplay

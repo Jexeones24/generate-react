@@ -8,6 +8,8 @@ import Profile from './components/Profile'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import UserAdapter from './adapters/UserAdapter'
 import SessionAdapter from './adapters/SessionAdapter'
+import authorize from './authorize'
+import { workoutNames } from './movementData'
 
 
 class App extends Component {
@@ -15,9 +17,23 @@ class App extends Component {
     super();
 
     this.state = {
+      movements: [],
+      names: workoutNames,
+      demoVideo: [],
       loggedIn: false,
       currentUser: {}
     }
+  }
+
+  componentDidMount(){
+    fetch("http://localhost:3000/api/v1/movements")
+    .then( resp => resp.json())
+      .then( movements => this.setState({ movements }))
+  }
+
+  renderVideo = (video) => {
+    let demoVideo = video[0].url
+    this.setState({ demoVideo })
   }
 
   createUser = (user) => {
@@ -31,7 +47,7 @@ class App extends Component {
     )
   }
 
-  // this gives an undefined token
+
   getUser = (username, password) => {
     console.log("in get user")
     SessionAdapter.getUser(username, password)
@@ -47,7 +63,6 @@ class App extends Component {
     this.props.history.push("login")
   }
 
-  // where did params come from?
   renderLogin = (params) => {
     return(
       <Login getUser={this.getUser} history={params.history} loggedIn={this.state.loggedIn}/>
@@ -60,21 +75,17 @@ class App extends Component {
     )
   }
 
-  // workout page - need to be logged in to see it
   renderHome = (params) => {
+    const AuthorizedHome = authorize(Home, {loggedIn: this.state.loggedIn, logout: this.logout, currentUser: this.state.currentUser, movements: this.state.movements, names: this.state.names, renderVideo: this.renderVideo })
     return(
-      <Home
-        history={params.history}
-        loggedIn={this.state.loggedIn}
-        logout={this.logout}
-        currentUser={this.state.currentUser}/>
+      <AuthorizedHome />
     )
   }
 
-  // user show - need to be logged in to see it
   renderProfile = () => {
+    const AuthorizedProfile = authorize(Profile, {logout: this.logout, currentUser: this.state.currentUser, getUser: this.getUser, movements: this.state.movements })
     return(
-      <Profile logout={this.logout} currentUser={this.state.currentUser} getUser={this.getUser}/>
+      <AuthorizedProfile />
     )
   }
 

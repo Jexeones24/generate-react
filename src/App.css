@@ -10,9 +10,17 @@
   margin: 25px;
 }
 
+.workout-display {
+  padding-top: 20px;
+}
+
+.workout-title {
+  font-size: 3vw;
+}
+
 .workout-container {
   width: 90%;
-  border: 5px solid black;
+  /*border: 5px solid black;*/
   padding: 100px;
   margin: 25px;
 }
@@ -36,4 +44,12 @@
   font-family: Menlo;
   font-size: 5vw;
   padding: 50px;
+}
+
+.last-workout, .stats {
+  text-align: center;
+}
+
+.workout-cards {
+  text-align:center;
 }
