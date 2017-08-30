@@ -29,26 +29,22 @@ class Profile extends Component {
         this.setState({currentUser, loggedIn: true})
       })
       .then( () => {
-        WorkoutAdapter.getWorkouts(this.state.currentUser)
+      WorkoutAdapter.getWorkouts(this.state.currentUser)
       .then( workouts => {
-        console.log(workouts)
         this.setState({ workouts })
       })
     })
   }
 
   handleChange = (e) => {
-    console.log(e.target.value)
-    //filter through all workouts real time
     let term = e.target.value
     let filteredWorkouts = this.state.workouts.filter((w) =>
       w.name.includes(term))
-      this.setState({ filteredWorkouts }, () => console.log(this.state.filteredWorkouts))
+      this.setState({ filteredWorkouts })
   }
 
 
   render(){
-    // debugger
     let now = new Date();
     let day = ("0" + now.getDate()).slice(-2);
     let month = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -90,8 +86,6 @@ class Profile extends Component {
                   <h1>STATS</h1>
                   <h3>Workouts Completed Today:</h3>
                   {wodsToday.map((w, i) => <p key={i}>{w.name}</p>)}
-                  <h3>Workouts This Week:</h3>
-                  <h3>Workouts This Month:</h3>
                   <Statistic color='orange' value={this.state.workouts.length} label='Total Workouts'/>
                 </div>
               </Grid.Column>
@@ -130,7 +124,6 @@ class Profile extends Component {
             </div>
           </Grid.Column>
           <Grid.Column width={8}>
-            insert shit here
           </Grid.Column>
           </Grid.Row>
         </Grid>

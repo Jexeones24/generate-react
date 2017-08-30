@@ -31,7 +31,7 @@ export default class Home extends Component {
           </Grid.Column>
           <Grid.Column width={8}>
             <div className="workout-detail">
-              <DemoVideo url={this.props.demoVideo}/>
+              <DemoVideo url={this.props.url}/>
             </div>
           </Grid.Column>
           </Grid.Row>

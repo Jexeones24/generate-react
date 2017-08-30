@@ -31,7 +31,7 @@ class App extends Component {
       .then( movements => this.setState({ movements }))
   }
 
-  renderVideo = (video) => {
+  renderVideo = (video) => { // sets video to state
     let demoVideo = video[0].url
     this.setState({ demoVideo })
   }
@@ -49,7 +49,6 @@ class App extends Component {
 
 
   getUser = (username, password) => {
-    console.log("in get user")
     SessionAdapter.getUser(username, password)
       .then( data => {
         localStorage.setItem('token', data.jwt)
@@ -76,7 +75,7 @@ class App extends Component {
   }
 
   renderHome = (params) => {
-    const AuthorizedHome = authorize(Home, {loggedIn: this.state.loggedIn, logout: this.logout, currentUser: this.state.currentUser, movements: this.state.movements, names: this.state.names, renderVideo: this.renderVideo })
+    const AuthorizedHome = authorize(Home, {loggedIn: this.state.loggedIn, logout: this.logout, currentUser: this.state.currentUser, movements: this.state.movements, names: this.state.names, url: this.state.demoVideo, renderVideo: this.renderVideo})
     return(
       <AuthorizedHome />
     )

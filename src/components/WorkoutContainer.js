@@ -10,11 +10,11 @@ export default class WorkoutContainer extends Component {
 
     this.state = {
       timeDomain: null,
+      currentUser: {},
       workoutName: "",
       workoutStyle: "",
-      chosenMovements: [],
-      repsPer: [],
-      currentUser: {}
+      movementObjs: [],
+      repsPer: []
     }
   }
 
@@ -23,28 +23,27 @@ export default class WorkoutContainer extends Component {
     this.setState({ timeDomain })
   }
 
-
   handleSubmit = (e) => {
-    debugger
     e.preventDefault()
     let currentUser = this.props.currentUser
     this.setState({ currentUser })
     let workoutName = this.props.names[Math.floor(Math.random() * this.props.names.length)]
     let workoutStyle = this.chooseStyle()
-    let numberOfMovements = this.numberOfMovements(workoutStyle)
-    let chosenMovements = this.chooseMovements(numberOfMovements)
-    let repsPer = chosenMovements.map((m) => this.assignReps(m))
-    this.makeWorkout(workoutName, workoutStyle, chosenMovements, repsPer, currentUser)
+    let movementObjs = this.chooseMovements()
+    let repsPer = movementObjs.map((m) => m.reps)
+    this.setWorkoutState(workoutName, workoutStyle, movementObjs, repsPer, currentUser)
   }
 
-  makeWorkout = (workoutName, workoutStyle, chosenMovements, repsPer, currentUser) => {
+  setWorkoutState = (workoutName, workoutStyle, movementObjs, repsPer, currentUser) => {
     this.setState({
       workoutName,
       workoutStyle,
-      chosenMovements,
-      repsPer
+      movementObjs,
+      repsPer,
+      currentUser
     })
-    WorkoutAdapter.createWorkout(workoutName, workoutStyle, chosenMovements, repsPer, currentUser)
+    WorkoutAdapter.createWorkout(workoutName, workoutStyle, movementObjs, repsPer, currentUser)
+    .then( workout => { console.log(workout) })
   }
 
   getOption = (optionsArr) => {
@@ -53,45 +52,14 @@ export default class WorkoutContainer extends Component {
 
   chooseStyle = () => {
     let style = null;
-    const lowVol = ["As Many Rounds As Possible In", "Every Minute On The Minute For", "3 Rounds For Time"]
-    const medVol = ["As Many Rounds As Possible In", "Every 2 Minutes On The Minute For", "4 Rounds For Time"]
-    const hiVol = ["Every 3 Minutes On The Minute For", "5 Rounds For Time"]
-    if(this.state.timeDomain >= 5 && this.state.timeDomain <= 10){
-      return style = this.getOption(lowVol)
-    } else if (this.state.timeDomain >= 11 && this.state.timeDomain <= 20){
-      return style = this.getOption(medVol)
-    } else {
-      return style = this.getOption(hiVol)
-      }
-    }
-
-
-  numberOfMovements = (style) => {
-    let numberOfMovements = null;
-    if(style === "As Many Rounds As Possible In" || style === "Every Minute On The Minute" || style === "3 Rounds For Time" || style === "Every 2 Minutes On The Minute"){
-      return numberOfMovements = Math.floor(Math.random() * (3 - 2) + 2)
-    } else {
-      return numberOfMovements = Math.floor(Math.random() * (4 - 3) + 3)
-    }
+    const styleArray = ["As Many Rounds As Possible", "Every Minute On The Minute", "3 Rounds For Time", "4 Rounds For Time"]
+    return style = this.getOption(styleArray)
   }
 
-  chooseMovements = (numberOfMovements) => {
-    let number = this.props.movements.length - numberOfMovements
+  chooseMovements = () => {
+    let number = this.props.movements.length - 3
     let chosenMovements = this.props.movements.sort( function() { return 0.5 - Math.random()}).slice(number)
     return chosenMovements
-  }
-
-  assignReps = (m) => {
-    let reps = null;
-    if (m.description === "Cardio"){
-      return reps = m.seconds_per
-    } else if(m.skill === "High"){
-      return reps = Math.floor(Math.random() * (8 - 3) + 3)
-    } else if (m.skill === "Moderate"){
-      return reps = Math.floor(Math.random() * (15 - 9) + 9)
-    } else {
-      return reps = Math.floor(Math.random() * (40 - 16) + 16)
-    }
   }
 
   displayVideo = (e) => {
@@ -101,7 +69,7 @@ export default class WorkoutContainer extends Component {
 
   render(){
     let numbers = []
-    for (var i = 5; i <= 60; i++) { numbers.push(i) }
+    for (var i = 10; i <= 25; i++) { numbers.push(i) }
     return(
       <div>
         <form className="time-domain-form" onSubmit={this.handleSubmit}>
@@ -114,7 +82,7 @@ export default class WorkoutContainer extends Component {
           <div className="workout-display">
             <NewWorkoutDisplay
             workoutName={this.state.workoutName}
-            timeDomain={this.state.timeDomain} workoutStyle={this.state.workoutStyle} chosenMovements={this.state.chosenMovements} repsPer={this.state.repsPer} video={this.displayVideo}/>
+            timeDomain={this.state.timeDomain} workoutStyle={this.state.workoutStyle} chosenMovements={this.state.movementObjs} repsPer={this.state.repsPer} video={this.displayVideo}/>
         </div>
       </div>
     )
