@@ -31,7 +31,7 @@ class App extends Component {
       .then( movements => this.setState({ movements }))
   }
 
-  renderVideo = (video) => { // sets video to state
+  renderVideo = (video) => {
     let demoVideo = video[0].url
     this.setState({ demoVideo })
   }
@@ -43,7 +43,7 @@ class App extends Component {
       currentUser: user,
       loggedIn: true
     })
-    localStorage.setItem('token', user.jwt)}
+    localStorage.setItem('token', user.jwt)} // is this right?
     )
   }
 
