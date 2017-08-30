@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { Grid, Image, Card, Icon, Button, Input, Statistic, Dropdown, Menu } from 'semantic-ui-react'
+import { Grid, Image, Card, Icon, Button, Input, Statistic } from 'semantic-ui-react'
 import SessionAdapter from '../adapters/SessionAdapter'
 import WorkoutAdapter from '../adapters/WorkoutAdapter'
 import { Link } from 'react-router-dom';
 import authorize from '../authorize'
 import Detail from './Detail'
+import Filter from './Filter'
 
 class Profile extends Component {
   constructor(){
     super();
 
     this.state = {
+      allWorkouts: [],
       workouts: [],
       currentUser: {},
       loggedIn: false,
@@ -19,39 +21,50 @@ class Profile extends Component {
     }
   }
 
-  // componentWillReceiveProps(props) {
-  //    {props.loggedIn ? props.history.push('home') : props.history.push('login')}
-  //  }
-
   componentDidMount(){
     SessionAdapter.currentUser()
       .then(currentUser => {
+        console.log("currentUser", currentUser)
         this.setState({currentUser, loggedIn: true})
       })
       .then( () => {
       WorkoutAdapter.getWorkouts(this.state.currentUser)
       .then( workouts => {
+        console.log("workouts", workouts)
         this.setState({ workouts })
       })
     })
+    fetch('http://localhost:3000/api/v1/workouts')
+      .then( resp => resp.json())
+      .then( allWorkouts => {
+        console.log("allWorkouts", allWorkouts)
+      this.setState({ allWorkouts })
+    })
   }
 
-  handleChange = (e) => {
-    let term = e.target.value
-    let filteredWorkouts = this.state.workouts.filter((w) =>
-      w.name.includes(term))
-      this.setState({ filteredWorkouts })
+  filteredWorkouts = (term) => {
+    console.log("in profile", term)
+    // debugger
+    this.setState({ term })
+    let workouts = this.state.allWorkouts
+    let filteredWorkouts = this.state.allWorkouts.filter((w) =>
+    w.name.toLowerCase().includes(term))
+    // return filteredWorkouts
+    this.setState({ filteredWorkouts })
   }
 
 
   render(){
-    let now = new Date();
-    let day = ("0" + now.getDate()).slice(-2);
-    let month = ("0" + (now.getMonth() + 1)).slice(-2);
-    let today = now.getFullYear() + "-" + (month) + "-" + (day);
-    let wodsToday = this.state.workouts.filter((w) => { return w.created_at.substring(0, w.created_at.indexOf("T")) === today })
-    let filterOptions = [ { key: 'All', value: 'All', text: 'All' }, { key: 'Name', value: 'Name', text: 'Name' }, { key: 'Movements', value: 'Movements', text: 'Movements' }, { key: 'Month', value: 'Month', text: 'Month' } ]
+    // debugger
+    let day = ("0" + new Date().getDate()).slice(-2);
+    let month = ("0" + (new Date().getMonth() + 1)).slice(-2);
+    let today = new Date().getFullYear() + "-" + (month) + "-" + (day);
+    let wod = this.state.workouts
 
+    // why doesn't this work?
+    // console.log(wod.filter((w) => w.created_at.substring(0, w.created_at.indexOf("T")) === today))
+
+    console.log(this.state.workouts[0])
     return(
       <div>
         <div className="upper-profile">
@@ -85,7 +98,7 @@ class Profile extends Component {
                 <div className="stats">
                   <h1>STATS</h1>
                   <h3>Workouts Completed Today:</h3>
-                  {wodsToday.map((w, i) => <p key={i}>{w.name}</p>)}
+                  {wod.map((w, i) => <p key={i}>{w.name}</p>)}
                   <Statistic color='orange' value={this.state.workouts.length} label='Total Workouts'/>
                 </div>
               </Grid.Column>
@@ -97,27 +110,7 @@ class Profile extends Component {
           <Grid.Column width={8}>
             <div className="">
               <h1 className="last-workout">WORKOUT DETAILS</h1>
-              <Menu vertical>
-                <Menu.Item>
-                  <Link to={"/"}>Gener8</Link>
-                </Menu.Item>
-                <Dropdown text='Month' pointing='left' className='link item'>
-                  <Dropdown.Menu>
-                    <Dropdown.Item>January</Dropdown.Item>
-                    <Dropdown.Item>February</Dropdown.Item>
-                    <Dropdown.Item>March</Dropdown.Item>
-                    <Dropdown.Item>April</Dropdown.Item>
-                    <Dropdown.Item>May</Dropdown.Item>
-                    <Dropdown.Item>June</Dropdown.Item>
-                    <Dropdown.Item>July</Dropdown.Item>
-                    <Dropdown.Item>August</Dropdown.Item>
-                    <Dropdown.Item>September</Dropdown.Item>
-                    <Dropdown.Item>October</Dropdown.Item>
-                    <Dropdown.Item>November</Dropdown.Item>
-                    <Dropdown.Item>December</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Menu>
+              <Filter allWorkouts={this.state.allWorkouts} filteredWorkouts={this.filteredWorkouts}/>
               <div>
               <Detail workouts={this.state.filteredWorkouts}/>
               </div>
